@@ -1,6 +1,6 @@
 {
   "name": "contentful-smart-migration",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Contentful migration enhancement for projects that need to have a migration be used across multiple environments",
   "main": "index.js",
   "scripts": {
