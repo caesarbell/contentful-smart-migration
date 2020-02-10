@@ -1,4 +1,4 @@
-const { isEqual, cloneDeep } = require("lodash");
+const { isEqual, cloneDeep, get } = require("lodash");
 
 class OperateOn {
   constructor(migration, { makeRequest }, contentType, fields) {
@@ -26,7 +26,7 @@ class OperateOn {
   get operationOnField() {
     return this.determineOperation().then(content => {
       const items = content.items;
-      const contentfulFields = items[0].fields;
+      const contentfulFields = get(items[0], "fields", []);
 
       this.fields.forEach(field => {
         let alreadyExistedField = contentfulFields.find(
