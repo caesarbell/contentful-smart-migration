@@ -2,7 +2,7 @@
   "name": "contentful-smart-migration",
   "version": "1.0.2",
   "description": "Contentful migration enhancement for projects that need to have a migration be used across multiple environments",
-  "main": "src/index.js",
+  "main": "build/bundle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ./src/*.js && prettier-eslint --list-different ./src/*.js",
@@ -41,6 +41,7 @@
     "eslint-plugin-flowtype": "^4.6.0",
     "eslint-plugin-import": "^2.20.1",
     "flow-bin": "^0.118.0",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "webpack": "^4.41.6"
   }
 }
