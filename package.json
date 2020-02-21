@@ -2,11 +2,11 @@
   "name": "contentful-smart-migration",
   "version": "1.0.2",
   "description": "Contentful migration enhancement for projects that need to have a migration be used across multiple environments",
-  "main": "build/bundle.js",
+  "main": "dist/bundle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ./src/*.js && prettier-eslint --list-different ./src/*.js",
-    "build": "babel src/ -d lib/",
+    "build": "webpack --mode production",
     "prepublish": "npm run build",
     "flow": "flow status",
     "flow:stop": "flow stop",
@@ -34,14 +34,20 @@
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
     "@babel/preset-flow": "^7.8.3",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-flowtype": "^4.6.0",
     "eslint-plugin-import": "^2.20.1",
+    "flow-babel-webpack-plugin": "^1.1.1",
     "flow-bin": "^0.118.0",
     "prettier": "^1.19.1",
-    "webpack": "^4.41.6"
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
   }
 }
