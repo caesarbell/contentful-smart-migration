@@ -1,4 +1,4 @@
-const OperateOn = require("../src/index");
+const OperateOn = require("contentful-smart-migration");
 
 module.exports = async function(migration, context) {
   const componentExample = {
@@ -15,9 +15,13 @@ module.exports = async function(migration, context) {
       id: "title",
       name: "Title",
     },
+    {
+      id: "name",
+      name: "Name",
+    },
   ];
 
   const component = new OperateOn(migration, context, componentExample, fields);
-  await component.operationOnContent();
-  await component.operationOnField();
+  await component.operationOnContent;
+  await component.operationOnField;
 };
