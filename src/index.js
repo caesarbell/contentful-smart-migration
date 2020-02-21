@@ -1,36 +1,55 @@
+/* @flow */
+
 const { isEqual, cloneDeep, get } = require("lodash");
 
 class OperateOn {
-  constructor(migration, { makeRequest }, contentType, fields) {
+  migration: Object;
+
+  makeRequest: Object;
+
+  contentType: any;
+
+  fields: any;
+
+  modifyContentType: any;
+
+  globalConfiguration: any;
+
+  constructor(
+    migration: any,
+    { makeRequest }: Object,
+    contentType: any,
+    fields: any,
+  ): any {
     this.migration = migration;
     this.makeRequest = makeRequest;
     this.contentType = contentType;
     this.fields = fields;
-    this.modifyContentType;
+    this.modifyContentType = null;
   }
 
-  get operationOnContent() {
-    return this.determineOperation().then(content => {
-      const items = content.items;
-      const id = this.contentType.id;
-      const opts = this.contentType.opts;
+  get operationOnContent(): any {
+    return async (): any => {
+      const content: any = await this.determineOperation();
+      const { items } = content;
+      const { id, opts } = this.contentType;
       this.modifyContentType =
         items.length > 0
           ? this.migration.editContentType(id, opts)
           : this.migration.createContentType(id, opts);
-
       return this.modifyContentType;
-    });
+    };
   }
 
-  get operationOnField() {
-    return this.determineOperation().then(content => {
-      const items = content.items;
+  get operationOnField(): any {
+    return async (): any => {
+      const content = await this.determineOperation();
+      const { items } = content;
       const contentfulFields = get(items[0], "fields", []);
 
-      this.fields.forEach(field => {
-        let alreadyExistedField = contentfulFields.find(
-          contentfulField => contentfulField.id === field.id
+      this.fields.forEach((field: any) => {
+        const alreadyExistedField = contentfulFields.find(
+          (contentfulField: any): Object => contentfulField.id === field.id,
         );
 
         if (alreadyExistedField) {
@@ -59,53 +78,49 @@ class OperateOn {
           if (
             !isEqual(alreadyExistedField, {
               ...cloneField,
-              ...this.globalConfiguration(cloneField)
+              ...this.globalConfiguration(cloneField),
             })
           ) {
             this.modifyContentType.editField(field.id, {
               name: field.name,
-              ...this.globalConfiguration(field)
+              ...this.globalConfiguration(field),
             });
           }
-        } else {
-          if (!alreadyExistedField && field.modify) {
-            const hasBeenCreated = contentfulFields.find(
-              contentfulField => field.modify.old_id === contentfulField.id
-            );
+        } else if (!alreadyExistedField && field.modify) {
+          const hasBeenCreated = contentfulFields.find(
+            (contentfulField: any): any =>
+              field.modify.old_id === contentfulField.id,
+          );
 
-            if (hasBeenCreated) {
-              this.modifyContentType.changeFieldId(
-                field.modify.old_id,
-                field.id
-              );
-              this.modifyContentType.editField(field.id, {
-                name: field.name,
-                ...this.globalConfiguration(field)
-              });
-            } else if (!hasBeenCreated) {
-              this.modifyContentType.createField(field.id, {
-                name: field.name,
-                ...this.globalConfiguration(field)
-              });
-            }
-          } else if (!alreadyExistedField && field && !field.remove) {
+          if (hasBeenCreated) {
+            this.modifyContentType.changeFieldId(field.modify.old_id, field.id);
+            this.modifyContentType.editField(field.id, {
+              name: field.name,
+              ...this.globalConfiguration(field),
+            });
+          } else if (!hasBeenCreated) {
             this.modifyContentType.createField(field.id, {
               name: field.name,
-              ...this.globalConfiguration(field)
+              ...this.globalConfiguration(field),
             });
           }
+        } else if (!alreadyExistedField && field && !field.remove) {
+          this.modifyContentType.createField(field.id, {
+            name: field.name,
+            ...this.globalConfiguration(field),
+          });
         }
       });
 
       this.fields
         .filter(
-          field =>
+          (field: any): any =>
             field.helpText ||
             field.widgetId ||
             field.falseLabel ||
-            field.trueLabel
+            field.trueLabel,
         )
-        .forEach(field => {
+        .forEach((field: any) => {
           const config = {};
 
           if (field.helpText) config.helpText = field.helpText;
@@ -116,13 +131,19 @@ class OperateOn {
             field.id,
             "builtin",
             field.widgetId,
-            config
+            config,
           );
         });
-    });
+    };
   }
 
-  globalConfiguration({
+  /**
+   *
+   * @param {Object} param0
+   * utility functions
+   */
+
+  static globalConfiguration({
     type = "Symbol",
     required = true,
     validations = [],
@@ -130,15 +151,15 @@ class OperateOn {
     linkType = null,
     localized = false,
     disabled = false,
-    omitted = false
-  }) {
-    const config = {
+    omitted = false,
+  }: Object): any {
+    const config: Object = {
       type,
       required,
       validations,
       localized,
       disabled,
-      omitted
+      omitted,
     };
 
     if (linkType) config.linkType = linkType;
@@ -148,11 +169,12 @@ class OperateOn {
     return config;
   }
 
-  async determineOperation() {
+  async determineOperation(): any {
     const content = await this.makeRequest({
       method: "GET",
-      url: `/content_types?sys.id[in]=${this.contentType.id}`
+      url: `/content_types?sys.id[in]=${this.contentType.id}`,
     });
+
     return content;
   }
 }
