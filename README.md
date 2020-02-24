@@ -306,3 +306,13 @@ module.exports = async function(migration, context) {
   await component.operationOnField;
 };
 ```
+
+## Get involved
+
+## License
+
+This repository is published under the [MIT](https://github.com/caesarbell/contentful-smart-migration/blob/master/LICENSE) license.
+
+## Code of Conduct
+
+We want to provide a safe, inclusive, welcoming, and harassment-free space and experience for all participants, regardless of gender identity and expression, sexual orientation, disability, physical appearance, socioeconomic status, body size, ethnicity, nationality, level of experience, age, religion (or lack thereof), or other identity markers. Basically open to all developers.
