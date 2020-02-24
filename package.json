@@ -23,7 +23,7 @@
     "js"
   ],
   "author": "caesarbell",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/caesarbell/contentful-smart-migration/issues"
   },
