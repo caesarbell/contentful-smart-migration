@@ -4,7 +4,7 @@
 
 [Contentful](https://www.contentful.com/developers/docs/) Provides a API driven CMS for websites, apps, and other digital devices. Unlike a traditional CMS, Contentful was built to integrate with the modern software stack. It offers a centralize space for structured content, powerful management and delivery APIs.
 
-## Why
+## Why ?
 
 This provides a reusable way of building and running your Contentful migration scripts for a projects that use multiple contentful environments.
 
@@ -67,7 +67,7 @@ Creating the Content Type
 
 More info on the Content Type can be found [here](https://github.com/contentful/contentful-migration#createcontenttypeid-opts--contenttype)
 
-Creating an Content Type example, below.
+Creating a Content Type example, below.
 
 ```
 const componentExample = {
@@ -231,12 +231,12 @@ const fields = [
   {
     id: "components",
     name: "Components",
-    remove: true, // the remove method tells CSM to remove this field from Contentful.
+    remove: true, // the remove property tells CSM to remove this field from Contentful.
   }
 ]
 ```
 
-**Important** If called again in the same environment the field with the remove property will be ignored, if you remove the property removed it will tell the CSM to create the field again.
+**Important** If called again in the same environment the field with the remove property will be ignored. When you delete the property "remove", it will tell the CSM to create the field again.
 
 Modify a Field (changing the name)
 
