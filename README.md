@@ -302,8 +302,8 @@ module.exports = async function(migration, context) {
   ];
 
   const component = new OperateOn(migration, context, componentExample, fields);
-  await component.operationOnContent;
-  await component.operationOnField;
+  await component.operationOnContent();
+  await component.operationOnField();
 };
 ```
 
