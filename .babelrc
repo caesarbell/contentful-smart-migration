@@ -1,7 +1,15 @@
 {
+  "sourceType": "unambiguous",
   "presets": ["@babel/preset-flow", "@babel/preset-env"],
   "plugins": [
+    "transform-class-properties",
     "transform-flow-comments",
-    "@babel/plugin-proposal-class-properties"
+    "@babel/plugin-proposal-class-properties",
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "regenerator": true
+      }
+    ]
   ]
 }

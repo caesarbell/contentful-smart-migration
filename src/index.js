@@ -78,12 +78,12 @@ class OperateOn {
           if (
             !isEqual(alreadyExistedField, {
               ...cloneField,
-              ...this.globalConfiguration(cloneField),
+              ...OperateOn.globalConfiguration(cloneField),
             })
           ) {
             this.modifyContentType.editField(field.id, {
               name: field.name,
-              ...this.globalConfiguration(field),
+              ...OperateOn.globalConfiguration(field),
             });
           }
         } else if (!alreadyExistedField && field.modify) {
@@ -96,18 +96,18 @@ class OperateOn {
             this.modifyContentType.changeFieldId(field.modify.old_id, field.id);
             this.modifyContentType.editField(field.id, {
               name: field.name,
-              ...this.globalConfiguration(field),
+              ...OperateOn.globalConfiguration(field),
             });
           } else if (!hasBeenCreated) {
             this.modifyContentType.createField(field.id, {
               name: field.name,
-              ...this.globalConfiguration(field),
+              ...OperateOn.globalConfiguration(field),
             });
           }
         } else if (!alreadyExistedField && field && !field.remove) {
           this.modifyContentType.createField(field.id, {
             name: field.name,
-            ...this.globalConfiguration(field),
+            ...OperateOn.globalConfiguration(field),
           });
         }
       });
