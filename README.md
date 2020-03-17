@@ -213,9 +213,9 @@ const fields = [
     items: {
       type: "Link",
       linkType: "Entry",
-      validations: {
+      validations: [
         { linkContentType: [ 'my-content-type' ] } // Only allows this entry to be linked
-      }
+      ]
     }
     validations : [
       {"size": { "max": 20}}  // no more then 20 entries can be link to this field
@@ -272,6 +272,10 @@ const fields = [
   }
 ]
 ```
+
+### Ordering the Fields
+
+The order of the fields in Contentful will match the order of your objects in your fields `const fields = []` array. If you change the order of your objects it will fire off Contentful's moveField migration method. If the order of your objects in the fields array remain the same the moveField method will not be fired.
 
 ### All Together Example
 
