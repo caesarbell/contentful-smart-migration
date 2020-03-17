@@ -130,11 +130,37 @@ class OperateOn {
           this.modifyContentType.changeFieldControl(
             field.id,
             "builtin",
-            field.widgetId,
             config,
           );
         });
+
+      if (!OperateOn.orderFields(this.fields, contentfulFields)) {
+        this.fields
+          .filter((field: any): any => !field.remove)
+          .forEach((field: any): any =>
+            this.modifyContentType.moveField(field.id).toTheBottom(),
+          );
+      }
     };
+  }
+
+  static orderFields(fields: any, contentfulFields: any): any {
+    let identical = true;
+    let index = 0;
+    const maximumLength = fields.length - 1;
+
+    while (identical && index <= maximumLength) {
+      try {
+        if (fields[index].id !== contentfulFields[index].id) {
+          identical = false;
+        }
+        index += 1;
+      } catch (error) {
+        identical = false;
+      }
+    }
+
+    return identical;
   }
 
   /**
