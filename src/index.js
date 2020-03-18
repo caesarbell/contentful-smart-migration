@@ -1,6 +1,8 @@
+/* eslint-disable function-paren-newline */
 /* @flow */
 
-const { isEqual, cloneDeep, get } = require("lodash");
+import { isEqual, cloneDeep, get } from "lodash";
+import type { GlobalConfigType, ConfigType, FieldType } from "../typings/index";
 
 class OperateOn {
   migration: Object;
@@ -19,7 +21,7 @@ class OperateOn {
     migration: any,
     { makeRequest }: Object,
     contentType: any,
-    fields: any,
+    fields: FieldType,
   ): any {
     this.migration = migration;
     this.makeRequest = makeRequest;
@@ -82,7 +84,6 @@ class OperateOn {
             })
           ) {
             this.modifyContentType.editField(field.id, {
-              name: field.name,
               ...OperateOn.globalConfiguration(field),
             });
           }
@@ -95,18 +96,15 @@ class OperateOn {
           if (hasBeenCreated) {
             this.modifyContentType.changeFieldId(field.modify.old_id, field.id);
             this.modifyContentType.editField(field.id, {
-              name: field.name,
               ...OperateOn.globalConfiguration(field),
             });
           } else if (!hasBeenCreated) {
             this.modifyContentType.createField(field.id, {
-              name: field.name,
               ...OperateOn.globalConfiguration(field),
             });
           }
         } else if (!alreadyExistedField && field && !field.remove) {
           this.modifyContentType.createField(field.id, {
-            name: field.name,
             ...OperateOn.globalConfiguration(field),
           });
         }
@@ -136,7 +134,7 @@ class OperateOn {
 
       if (!OperateOn.orderFields(this.fields, contentfulFields)) {
         this.fields
-          .filter((field: any): any => !field.remove)
+          .filter((field: FieldType): any => !field.remove)
           .forEach((field: any): any =>
             this.modifyContentType.moveField(field.id).toTheBottom(),
           );
@@ -144,7 +142,7 @@ class OperateOn {
     };
   }
 
-  static orderFields(fields: any, contentfulFields: any): any {
+  static orderFields(fields: Array<*>, contentfulFields: Array<*>): boolean {
     let identical = true;
     let index = 0;
     const maximumLength = fields.length - 1;
@@ -170,6 +168,7 @@ class OperateOn {
    */
 
   static globalConfiguration({
+    name,
     type = "Symbol",
     required = true,
     validations = [],
@@ -178,8 +177,9 @@ class OperateOn {
     localized = false,
     disabled = false,
     omitted = false,
-  }: Object): any {
-    const config: Object = {
+  }: GlobalConfigType): GlobalConfigType {
+    const config: ConfigType = {
+      name,
       type,
       required,
       validations,
@@ -195,7 +195,7 @@ class OperateOn {
     return config;
   }
 
-  async determineOperation(): any {
+  async determineOperation(): Promise<string> {
     const content = await this.makeRequest({
       method: "GET",
       url: `/content_types?sys.id[in]=${this.contentType.id}`,
