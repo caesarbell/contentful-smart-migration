@@ -130,6 +130,7 @@ class OperateOn {
           this.modifyContentType.changeFieldControl(
             field.id,
             "builtin",
+            field.widgetId,
             config,
           );
         });
